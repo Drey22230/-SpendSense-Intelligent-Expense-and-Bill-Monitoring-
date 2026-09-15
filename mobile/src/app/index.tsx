@@ -1,34 +1,40 @@
-import { Text, View, StyleSheet, Button, TextInput } from "react-native";
-
+import { Text, View, StyleSheet, Button, TextInput, Image } from "react-native";
+import { useRouter } from "expo-router";
+import { useState, useEffect } from "react";
 export default function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/register");
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello, React Native!</Text>
-      <Button title="Press me!" onPress={() => alert("Button pressed!")} />
-      <TextInput
-        placeholder="Enter text here..."
-        style={styles.input}
-      />
+      <Text style={styles.text}>Welcome </Text>
+      <Image style={styles.image} source={require("../../Images/normal.png")}  />
+      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "green",
+    backgroundColor: "#F97316",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
     color: "white",
-    fontSize: 24,
+    fontSize: 35,
+    fontWeight: "bold",
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "white",
-    color: "white",
-    padding: 10,
-    margin: 10,
+  image: {
+    width: 200,
+    height: 200,
   },
 });
