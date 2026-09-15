@@ -10,8 +10,9 @@ import {
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebase";
-
+import { useRouter } from "expo-router";
 export default function Login() {
+    const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,8 +28,7 @@ export default function Login() {
         email.trim(),
         password
       );
-
-      Alert.alert("Success", "Login successful!");
+      router.push("/home");      
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
+    backgroundColor: "#F97316",
   },
 
   title: {

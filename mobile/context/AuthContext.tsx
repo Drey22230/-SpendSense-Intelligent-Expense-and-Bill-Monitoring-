@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useContext,
   useEffect,
@@ -30,6 +30,8 @@ export function AuthProvider({
     const unsubscribe = onAuthStateChanged(
       auth,
       (currentUser) => {
+        console.log("AUTH USER:", currentUser);
+
         setUser(currentUser);
         setLoading(false);
       }
@@ -39,7 +41,12 @@ export function AuthProvider({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,30 +1,41 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 
+import { signOut } from "firebase/auth";
+import { auth } from "../../services/firebase";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "expo-router";
 export default function Home() {
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.replace("/login");
+    } catch (error) {
+      console.log("LOGOUT ERROR:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        SpendSense
-      </Text>
+      <Text style={styles.title}>SpendSense</Text>
 
-      <Text style={styles.welcome}>
-        Welcome back! 👋
-      </Text>
+      <Text style={styles.welcome}>Welcome back! 👋</Text>
 
-      <View style={styles.card}>
-        <Text>Monthly Budget</Text>
-        <Text style={styles.amount}>₱0</Text>
-      </View>
+      <Text style={styles.email}>{user?.email ?? "No user"}</Text>
 
-      <View style={styles.card}>
-        <Text>Total Spent</Text>
-        <Text style={styles.amount}>₱0</Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text>Remaining</Text>
-        <Text style={styles.amount}>₱0</Text>
-      </View>
+      <Pressable style={styles.button} onPress={handleLogout}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </Pressable>
     </View>
   );
 }
@@ -32,8 +43,9 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    paddingTop: 70,
   },
 
   title: {
@@ -44,20 +56,23 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 18,
     marginTop: 10,
-    marginBottom: 30,
   },
 
-  card: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    marginBottom: 15,
+  email: {
+    fontSize: 16,
+    marginTop: 10,
   },
 
-  amount: {
-    fontSize: 24,
+  button: {
+    marginTop: 30,
+    backgroundColor: "black",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+  },
+
+  buttonText: {
+    color: "white",
     fontWeight: "bold",
-    marginTop: 8,
   },
 });
